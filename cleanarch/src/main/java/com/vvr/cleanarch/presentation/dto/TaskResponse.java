@@ -2,16 +2,29 @@ package com.vvr.cleanarch.presentation.dto;
 
 import com.vvr.cleanarch.domain.entities.Task;
 import com.vvr.cleanarch.domain.entities.TaskStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
+@Schema(description = "Resposta contendo os dados de uma tarefa")
 public class TaskResponse {
 
+    @Schema(description = "ID único da tarefa", example = "1")
     private Long id;
+
+    @Schema(description = "Título da tarefa", example = "Estudar Spring Boot")
     private String title;
+
+    @Schema(description = "Descrição detalhada da tarefa", example = "Estudar os conceitos de Clean Architecture com Spring Boot")
     private String description;
+
+    @Schema(description = "Status atual da tarefa", example = "PENDING")
     private TaskStatus status;
+
+    @Schema(description = "Data e hora de criação da tarefa", example = "2026-01-21T10:30:00")
     private LocalDateTime createdAt;
+
+    @Schema(description = "Data e hora da última atualização da tarefa", example = "2026-01-21T14:45:00")
     private LocalDateTime updatedAt;
 
     public TaskResponse() {
