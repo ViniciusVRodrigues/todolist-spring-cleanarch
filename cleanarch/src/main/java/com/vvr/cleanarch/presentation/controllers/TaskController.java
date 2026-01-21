@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -65,7 +64,7 @@ public class TaskController {
         List<Task> tasks = listTasksUseCase.execute(status);
         List<TaskResponse> responses = tasks.stream()
                 .map(TaskResponse::from)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(responses);
     }
 

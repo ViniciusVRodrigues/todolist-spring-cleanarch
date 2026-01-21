@@ -6,7 +6,6 @@ import com.vvr.cleanarch.domain.repositories.TaskRepository;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ListTasksUseCase {
 
@@ -29,6 +28,6 @@ public class ListTasksUseCase {
         return tasks.stream()
                 .sorted(Comparator.comparing(Task::getCreatedAt, 
                         Comparator.nullsLast(Comparator.reverseOrder())))
-                .collect(Collectors.toList());
+                .toList();
     }
 }
