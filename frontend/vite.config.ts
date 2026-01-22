@@ -23,10 +23,10 @@ export default defineConfig({
     cssCodeSplit: false,
   },
   server: {
-    port: 3000,
+    port: 3001,
     cors: true,
   },
   preview: {
-    port: 3000,
+    port: 3001,
   },
 })
