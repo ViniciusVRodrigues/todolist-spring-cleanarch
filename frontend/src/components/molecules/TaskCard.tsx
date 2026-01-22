@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import type { Task } from '../../types';
-import { Badge, getStatusLabel, Button } from '../atoms';
+import type { Task, TaskStatus } from '../../types';
+import { Button } from '../atoms';
+import { StatusSelect } from './StatusSelect';
 
 const Card = styled.div`
   background-color: ${({ theme }) => theme.colors.surface};
@@ -22,6 +23,7 @@ const Header = styled.div`
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.h3`
@@ -29,6 +31,7 @@ const Title = styled.h3`
   font-weight: 600;
   color: ${({ theme }) => theme.colors.text};
   flex: 1;
+  min-width: 120px;
   word-break: break-word;
 `;
 
@@ -63,6 +66,7 @@ interface TaskCardProps {
   onComplete: (id: number) => void;
   onEdit: (task: Task) => void;
   onDelete: (id: number) => void;
+  onStatusChange?: (id: number, status: TaskStatus) => void;
 }
 
 export const TaskCard: React.FC<TaskCardProps> = ({
@@ -70,6 +74,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   onComplete,
   onEdit,
   onDelete,
+  onStatusChange,
 }) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
@@ -84,11 +89,21 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   const isCompleted = task.status === 'COMPLETED';
   const isCancelled = task.status === 'CANCELLED';
 
+  const handleStatusChange = (newStatus: TaskStatus) => {
+    if (onStatusChange) {
+      onStatusChange(task.id, newStatus);
+    }
+  };
+
   return (
     <Card>
       <Header>
         <Title>{task.title}</Title>
-        <Badge $status={task.status}>{getStatusLabel(task.status)}</Badge>
+        <StatusSelect
+          status={task.status}
+          onChange={handleStatusChange}
+          disabled={!onStatusChange}
+        />
       </Header>
       {task.description && <Description>{task.description}</Description>}
       <Footer>

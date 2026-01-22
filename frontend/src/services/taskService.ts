@@ -71,6 +71,15 @@ export const taskService = {
     }
   },
 
+  async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
+    try {
+      const response = await api.patch<Task>(`/tasks/${id}/status`, { status });
+      return response.data;
+    } catch (error) {
+      return handleError(error);
+    }
+  },
+
   async deleteTask(id: number): Promise<void> {
     try {
       await api.delete(`/tasks/${id}`);

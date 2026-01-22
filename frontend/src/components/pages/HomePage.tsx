@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import type { Task } from '../../types';
+import type { Task, TaskStatus } from '../../types';
 import { MainLayout } from '../templates';
-import { TaskList } from '../organisms';
-import { Modal, TaskForm, StatusFilter } from '../molecules';
+import { KanbanBoard } from '../organisms';
+import { Modal, TaskForm } from '../molecules';
 import { Button } from '../atoms';
 import { useTasks } from '../../hooks';
 
@@ -22,26 +22,14 @@ const PageTitle = styled.h2`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-const FilterSection = styled.div`
-  margin-bottom: 24px;
-`;
-
-const FilterLabel = styled.span`
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  margin-bottom: 8px;
-  display: block;
-`;
-
 export const HomePage: React.FC = () => {
   const {
     tasks,
     isLoading,
-    statusFilter,
-    setStatusFilter,
     createTask,
     updateTask,
     completeTask,
+    updateTaskStatus,
     deleteTask,
   } = useTasks();
 
@@ -83,6 +71,10 @@ export const HomePage: React.FC = () => {
     setEditingTask(null);
   };
 
+  const handleStatusChange = (id: number, status: TaskStatus) => {
+    updateTaskStatus(id, status);
+  };
+
   return (
     <MainLayout>
       <PageHeader>
@@ -90,17 +82,13 @@ export const HomePage: React.FC = () => {
         <Button onClick={() => setIsCreateModalOpen(true)}>+ Nova Tarefa</Button>
       </PageHeader>
 
-      <FilterSection>
-        <FilterLabel>Filtrar por status:</FilterLabel>
-        <StatusFilter currentStatus={statusFilter} onStatusChange={setStatusFilter} />
-      </FilterSection>
-
-      <TaskList
+      <KanbanBoard
         tasks={tasks}
         isLoading={isLoading}
         onComplete={completeTask}
         onEdit={handleOpenEdit}
         onDelete={deleteTask}
+        onStatusChange={handleStatusChange}
       />
 
       <Modal
