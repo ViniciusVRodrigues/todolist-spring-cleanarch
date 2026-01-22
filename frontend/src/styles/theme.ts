@@ -25,6 +25,23 @@ export interface Theme {
   };
 }
 
+import type { TaskStatus } from '../types';
+
+export const getStatusColor = (status: TaskStatus, theme: Theme): string => {
+  switch (status) {
+    case 'PENDING':
+      return theme.colors.pending;
+    case 'IN_PROGRESS':
+      return theme.colors.inProgress;
+    case 'COMPLETED':
+      return theme.colors.completed;
+    case 'CANCELLED':
+      return theme.colors.cancelled;
+    default:
+      return theme.colors.pending;
+  }
+};
+
 export const lightTheme: Theme = {
   name: 'light',
   colors: {

@@ -3,19 +3,21 @@ import styled from 'styled-components';
 import type { Task, TaskStatus } from '../../types';
 import { TaskCard } from '../molecules';
 import { Spinner, SpinnerContainer } from '../atoms';
+import { getStatusColor } from '../../styles';
 
 const BoardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(280px, 1fr));
   gap: 16px;
   min-height: 400px;
+  overflow-x: auto;
 
   @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(280px, 1fr);
   }
 `;
 
@@ -23,26 +25,11 @@ interface ColumnProps {
   $status: TaskStatus;
 }
 
-const getColumnColor = (status: TaskStatus, theme: { colors: { pending: string; inProgress: string; completed: string; cancelled: string } }) => {
-  switch (status) {
-    case 'PENDING':
-      return theme.colors.pending;
-    case 'IN_PROGRESS':
-      return theme.colors.inProgress;
-    case 'COMPLETED':
-      return theme.colors.completed;
-    case 'CANCELLED':
-      return theme.colors.cancelled;
-    default:
-      return theme.colors.pending;
-  }
-};
-
 const Column = styled.div<ColumnProps>`
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: 12px;
   padding: 16px;
-  border-top: 4px solid ${({ $status, theme }) => getColumnColor($status, theme)};
+  border-top: 4px solid ${({ $status, theme }) => getStatusColor($status, theme)};
   display: flex;
   flex-direction: column;
   min-height: 300px;
@@ -60,12 +47,12 @@ const ColumnTitle = styled.h3<ColumnProps>`
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: ${({ $status, theme }) => getColumnColor($status, theme)};
+  color: ${({ $status, theme }) => getStatusColor($status, theme)};
 `;
 
 const TaskCount = styled.span<ColumnProps>`
-  background-color: ${({ $status, theme }) => `${getColumnColor($status, theme)}20`};
-  color: ${({ $status, theme }) => getColumnColor($status, theme)};
+  background-color: ${({ $status, theme }) => `${getStatusColor($status, theme)}20`};
+  color: ${({ $status, theme }) => getStatusColor($status, theme)};
   font-size: 12px;
   font-weight: 600;
   padding: 2px 8px;
@@ -94,10 +81,10 @@ const EmptyColumn = styled.div`
 const DropZone = styled.div<{ $isDragOver: boolean; $status: TaskStatus }>`
   min-height: 100px;
   border: 2px dashed ${({ $isDragOver, $status, theme }) =>
-    $isDragOver ? getColumnColor($status, theme) : 'transparent'};
+    $isDragOver ? getStatusColor($status, theme) : 'transparent'};
   border-radius: 8px;
   background-color: ${({ $isDragOver, $status, theme }) =>
-    $isDragOver ? `${getColumnColor($status, theme)}10` : 'transparent'};
+    $isDragOver ? `${getStatusColor($status, theme)}10` : 'transparent'};
   transition: all 0.2s ease;
   flex: 1;
   display: flex;

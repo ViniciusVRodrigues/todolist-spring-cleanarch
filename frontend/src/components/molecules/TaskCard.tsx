@@ -23,6 +23,7 @@ const Header = styled.div`
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.h3`
@@ -30,6 +31,7 @@ const Title = styled.h3`
   font-weight: 600;
   color: ${({ theme }) => theme.colors.text};
   flex: 1;
+  min-width: 120px;
   word-break: break-word;
 `;
 

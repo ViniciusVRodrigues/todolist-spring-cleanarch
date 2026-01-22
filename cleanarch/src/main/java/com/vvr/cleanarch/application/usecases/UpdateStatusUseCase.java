@@ -25,14 +25,12 @@ public class UpdateStatusUseCase {
             throw new InvalidTaskException("Cancelled tasks cannot change status");
         }
 
-        TaskStatus newStatus = request.getStatus();
-        
-        // Validate status transition
-        if (task.getStatus() == TaskStatus.COMPLETED && newStatus != TaskStatus.COMPLETED) {
-            throw new InvalidTaskException("Completed tasks cannot be reopened");
+        // Additional rule: Completed tasks cannot change to other statuses
+        if (task.getStatus() == TaskStatus.COMPLETED) {
+            throw new InvalidTaskException("Completed tasks cannot change status");
         }
 
-        task.setStatus(newStatus);
+        task.setStatus(request.getStatus());
         task.setUpdatedAt(LocalDateTime.now());
 
         return taskRepository.save(task);
