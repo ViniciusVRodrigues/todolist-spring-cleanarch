@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import type { Task } from '../../types';
+import type { Task, TaskStatus } from '../../types';
 import { TaskCard } from '../molecules';
 import { Spinner, SpinnerContainer } from '../atoms';
 
@@ -38,6 +38,7 @@ interface TaskListProps {
   onComplete: (id: number) => void;
   onEdit: (task: Task) => void;
   onDelete: (id: number) => void;
+  onStatusChange?: (id: number, status: TaskStatus) => void;
 }
 
 export const TaskList: React.FC<TaskListProps> = ({
@@ -46,6 +47,7 @@ export const TaskList: React.FC<TaskListProps> = ({
   onComplete,
   onEdit,
   onDelete,
+  onStatusChange,
 }) => {
   if (isLoading) {
     return (
@@ -76,6 +78,7 @@ export const TaskList: React.FC<TaskListProps> = ({
           onComplete={onComplete}
           onEdit={onEdit}
           onDelete={onDelete}
+          onStatusChange={onStatusChange}
         />
       ))}
     </ListContainer>

@@ -5,6 +5,7 @@ import com.vvr.cleanarch.application.usecases.CreateTaskUseCase;
 import com.vvr.cleanarch.application.usecases.DeleteTaskUseCase;
 import com.vvr.cleanarch.application.usecases.GetTaskByIdUseCase;
 import com.vvr.cleanarch.application.usecases.ListTasksUseCase;
+import com.vvr.cleanarch.application.usecases.UpdateStatusUseCase;
 import com.vvr.cleanarch.application.usecases.UpdateTaskUseCase;
 import com.vvr.cleanarch.domain.repositories.TaskRepository;
 import org.springframework.context.annotation.Bean;
@@ -41,5 +42,10 @@ public class UseCaseConfig {
     @Bean
     public GetTaskByIdUseCase getTaskByIdUseCase(TaskRepository taskRepository) {
         return new GetTaskByIdUseCase(taskRepository);
+    }
+
+    @Bean
+    public UpdateStatusUseCase updateStatusUseCase(TaskRepository taskRepository) {
+        return new UpdateStatusUseCase(taskRepository);
     }
 }

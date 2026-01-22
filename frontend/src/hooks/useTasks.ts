@@ -7,7 +7,6 @@ import { useToast, useAlert } from '../contexts';
 export const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState<TaskStatus | null>(null);
   const { showToast } = useToast();
   const { showAlert } = useAlert();
 
@@ -22,14 +21,14 @@ export const useTasks = () => {
   const fetchTasks = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await taskService.listTasks(statusFilter || undefined);
+      const data = await taskService.listTasks();
       setTasks(data);
     } catch (error) {
       handleError(error as ApiError, 'Erro ao carregar tarefas');
     } finally {
       setIsLoading(false);
     }
-  }, [statusFilter, handleError]);
+  }, [handleError]);
 
   const createTask = useCallback(
     async (request: CreateTaskRequest): Promise<boolean> => {
@@ -76,6 +75,21 @@ export const useTasks = () => {
     [fetchTasks, showToast, handleError]
   );
 
+  const updateTaskStatus = useCallback(
+    async (id: number, status: TaskStatus): Promise<boolean> => {
+      try {
+        await taskService.updateTaskStatus(id, status);
+        showToast('Status atualizado com sucesso!');
+        await fetchTasks();
+        return true;
+      } catch (error) {
+        handleError(error as ApiError, 'Erro ao atualizar status');
+        return false;
+      }
+    },
+    [fetchTasks, showToast, handleError]
+  );
+
   const deleteTask = useCallback(
     async (id: number): Promise<boolean> => {
       try {
@@ -98,11 +112,10 @@ export const useTasks = () => {
   return {
     tasks,
     isLoading,
-    statusFilter,
-    setStatusFilter,
     createTask,
     updateTask,
     completeTask,
+    updateTaskStatus,
     deleteTask,
     refreshTasks: fetchTasks,
   };

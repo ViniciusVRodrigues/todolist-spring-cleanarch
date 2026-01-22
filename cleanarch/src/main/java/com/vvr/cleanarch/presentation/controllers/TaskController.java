@@ -1,12 +1,14 @@
 package com.vvr.cleanarch.presentation.controllers;
 
 import com.vvr.cleanarch.application.dto.CreateTaskRequest;
+import com.vvr.cleanarch.application.dto.UpdateStatusRequest;
 import com.vvr.cleanarch.application.dto.UpdateTaskRequest;
 import com.vvr.cleanarch.application.usecases.CompleteTaskUseCase;
 import com.vvr.cleanarch.application.usecases.CreateTaskUseCase;
 import com.vvr.cleanarch.application.usecases.DeleteTaskUseCase;
 import com.vvr.cleanarch.application.usecases.GetTaskByIdUseCase;
 import com.vvr.cleanarch.application.usecases.ListTasksUseCase;
+import com.vvr.cleanarch.application.usecases.UpdateStatusUseCase;
 import com.vvr.cleanarch.application.usecases.UpdateTaskUseCase;
 import com.vvr.cleanarch.domain.entities.Task;
 import com.vvr.cleanarch.domain.entities.TaskStatus;
@@ -45,19 +47,22 @@ public class TaskController {
     private final ListTasksUseCase listTasksUseCase;
     private final DeleteTaskUseCase deleteTaskUseCase;
     private final GetTaskByIdUseCase getTaskByIdUseCase;
+    private final UpdateStatusUseCase updateStatusUseCase;
 
     public TaskController(CreateTaskUseCase createTaskUseCase,
                           UpdateTaskUseCase updateTaskUseCase,
                           CompleteTaskUseCase completeTaskUseCase,
                           ListTasksUseCase listTasksUseCase,
                           DeleteTaskUseCase deleteTaskUseCase,
-                          GetTaskByIdUseCase getTaskByIdUseCase) {
+                          GetTaskByIdUseCase getTaskByIdUseCase,
+                          UpdateStatusUseCase updateStatusUseCase) {
         this.createTaskUseCase = createTaskUseCase;
         this.updateTaskUseCase = updateTaskUseCase;
         this.completeTaskUseCase = completeTaskUseCase;
         this.listTasksUseCase = listTasksUseCase;
         this.deleteTaskUseCase = deleteTaskUseCase;
         this.getTaskByIdUseCase = getTaskByIdUseCase;
+        this.updateStatusUseCase = updateStatusUseCase;
     }
 
     @Operation(
@@ -174,5 +179,27 @@ public class TaskController {
             @PathVariable Long id) {
         deleteTaskUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(
+            summary = "Atualizar status da tarefa",
+            description = "Atualiza o status de uma tarefa existente. Tarefas canceladas não podem ter o status alterado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status atualizado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TaskResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Status inválido ou transição não permitida",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada",
+                    content = @Content)
+    })
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<TaskResponse> updateStatus(
+            @Parameter(description = "ID da tarefa", required = true)
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateStatusRequest request) {
+        Task task = updateStatusUseCase.execute(id, request);
+        return ResponseEntity.ok(TaskResponse.from(task));
     }
 }
