@@ -1,2 +1,2 @@
 export * from './taskService';
-export * from './mockTaskService';
+export { mockTaskService } from './mockTaskService';
