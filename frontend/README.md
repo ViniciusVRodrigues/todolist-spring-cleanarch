@@ -101,7 +101,88 @@ Crie um arquivo `.env` na raiz do frontend:
 
 ```env
 VITE_API_URL=http://localhost:8080/api
+VITE_USE_MOCK_DATA=false
 ```
+
+### Modo Mock (sem Backend)
+
+Para usar a aplicação sem o backend (ideal para GitHub Pages ou demonstração):
+
+```env
+VITE_USE_MOCK_DATA=true
+```
+
+No modo mock:
+- Os dados são armazenados no `localStorage` do navegador
+- Tarefas de exemplo são criadas automaticamente na primeira execução
+- Todas as operações CRUD funcionam normalmente
+- Não requer conexão com a API do backend
+
+## 🚀 Deploy no GitHub Pages
+
+Para fazer deploy da versão mockada no GitHub Pages:
+
+1. **Configure o repositório no GitHub:**
+   - Vá em Settings > Pages
+   - Selecione "GitHub Actions" como source
+
+2. **Crie o arquivo de workflow** `.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+      - name: Build
+        working-directory: ./frontend
+        env:
+          VITE_USE_MOCK_DATA: true
+          VITE_BASE_PATH: /todolist-spring-cleanarch/
+        run: npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./frontend/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+3. **Build manual (alternativa):**
+
+```bash
+cd frontend
+VITE_USE_MOCK_DATA=true VITE_BASE_PATH=/todolist-spring-cleanarch/ npm run build
+```
+
+Os arquivos serão gerados em `frontend/dist/` prontos para deploy.
 
 ## 📖 Funcionalidades
 

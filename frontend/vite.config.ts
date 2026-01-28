@@ -16,6 +16,7 @@ export default defineConfig({
       shared: ['react', 'react-dom', 'styled-components'],
     }),
   ],
+  base: process.env.VITE_BASE_PATH || '/',
   build: {
     modulePreload: false,
     target: 'esnext',
