@@ -12,6 +12,7 @@ export default defineConfig({
       exposes: {
         './App': './src/App.tsx',
         './HomePage': './src/components/pages/HomePage.tsx',
+        './HomePageExport': './src/exports/HomePageExport.tsx',
       },
       shared: ['react', 'react-dom', 'styled-components'],
     }),
