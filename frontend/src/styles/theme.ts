@@ -1,5 +1,5 @@
 export interface Theme {
-  name: 'light' | 'dark';
+  name: 'light';
   colors: {
     primary: string;
     primaryHover: string;
