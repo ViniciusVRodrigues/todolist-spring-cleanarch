@@ -1,12 +1,11 @@
 import React from 'react';
-import { ThemeProvider, ToastProvider, AlertProvider, useToast, useAlert } from '../contexts';
-import { GlobalStyles } from '../styles';
+import { ToastProvider, AlertProvider, useToast, useAlert } from '../contexts';
 import { HomePage, Toast, Alert } from '../components';
 
 /**
- * Self-sufficient HomePage component for Module Federation export.
- * This wrapper includes all necessary providers (Theme, Toast, Alert)
- * so it can be used independently in a Host application.
+ * HomePage component for Module Federation export.
+ * This wrapper includes only Toast and Alert providers for local state.
+ * Theme is inherited from the Host application's ThemeProvider.
  */
 const HomePageContent: React.FC = () => {
   const { toasts, removeToast } = useToast();
@@ -14,7 +13,6 @@ const HomePageContent: React.FC = () => {
 
   return (
     <>
-      <GlobalStyles />
       <HomePage />
       <Toast toasts={toasts} onRemove={removeToast} />
       <Alert
@@ -29,13 +27,11 @@ const HomePageContent: React.FC = () => {
 
 const HomePageExport: React.FC = () => {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <AlertProvider>
-          <HomePageContent />
-        </AlertProvider>
-      </ToastProvider>
-    </ThemeProvider>
+    <ToastProvider>
+      <AlertProvider>
+        <HomePageContent />
+      </AlertProvider>
+    </ToastProvider>
   );
 };
 
