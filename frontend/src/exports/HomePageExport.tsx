@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, ToastProvider, AlertProvider, useToast, useAlert } from '../contexts';
+import { ToastProvider, AlertProvider, useToast, useAlert } from '../contexts';
 import { GlobalStyles } from '../styles';
 import { HomePage, Toast, Alert } from '../components';
 
@@ -29,13 +29,13 @@ const HomePageContent: React.FC = () => {
 
 const HomePageExport: React.FC = () => {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <AlertProvider>
-          <HomePageContent />
-        </AlertProvider>
-      </ToastProvider>
-    </ThemeProvider>
+
+    <ToastProvider>
+      <AlertProvider>
+        <HomePageContent />
+      </AlertProvider>
+    </ToastProvider>
+
   );
 };
 
