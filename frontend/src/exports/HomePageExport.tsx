@@ -1,20 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-import { ThemeProvider, ToastProvider, AlertProvider, useToast, useAlert } from '../contexts';
+import { ToastProvider, AlertProvider, useToast, useAlert } from '../contexts';
 import { GlobalStyles } from '../styles';
 import { HomePage, Toast, Alert } from '../components';
-
-/**
- * Container that ensures the light theme is applied to this component
- * even when loaded via Module Federation in a Host with different styles.
- */
-const ThemeContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  min-height: 100vh;
-  width: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-`;
 
 /**
  * Self-sufficient HomePage component for Module Federation export.
@@ -26,7 +13,7 @@ const HomePageContent: React.FC = () => {
   const { alert, hideAlert } = useAlert();
 
   return (
-    <ThemeContainer>
+    <>
       <GlobalStyles />
       <HomePage />
       <Toast toasts={toasts} onRemove={removeToast} />
@@ -36,19 +23,19 @@ const HomePageContent: React.FC = () => {
         message={alert.message}
         onClose={hideAlert}
       />
-    </ThemeContainer>
+    </>
   );
 };
 
 const HomePageExport: React.FC = () => {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <AlertProvider>
-          <HomePageContent />
-        </AlertProvider>
-      </ToastProvider>
-    </ThemeProvider>
+
+    <ToastProvider>
+      <AlertProvider>
+        <HomePageContent />
+      </AlertProvider>
+    </ToastProvider>
+
   );
 };
 
