@@ -69,29 +69,4 @@ export const lightTheme: Theme = {
   },
 };
 
-export const darkTheme: Theme = {
-  name: 'dark',
-  colors: {
-    primary: '#FF6B35',
-    primaryHover: '#FF8555',
-    primaryLight: '#3D2A24',
-    background: '#121212',
-    surface: '#1E1E1E',
-    surfaceHover: '#2A2A2A',
-    text: '#FFFFFF',
-    textSecondary: '#9CA3AF',
-    border: '#374151',
-    success: '#10B981',
-    error: '#EF4444',
-    warning: '#F59E0B',
-    pending: '#3B82F6',
-    inProgress: '#F59E0B',
-    completed: '#10B981',
-    cancelled: '#6B7280',
-  },
-  shadows: {
-    small: '0 1px 2px 0 rgba(0, 0, 0, 0.3)',
-    medium: '0 4px 6px -1px rgba(0, 0, 0, 0.4)',
-    large: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
-  },
-};
+

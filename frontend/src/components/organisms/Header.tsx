@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ThemeToggle } from '../atoms';
 
 const HeaderContainer = styled.header`
   background-color: ${({ theme }) => theme.colors.background};
@@ -49,7 +48,6 @@ export const Header: React.FC = () => {
             Todo<span>List</span>
           </LogoText>
         </Logo>
-        <ThemeToggle />
       </HeaderContent>
     </HeaderContainer>
   );
