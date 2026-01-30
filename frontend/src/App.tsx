@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider, ToastProvider, AlertProvider, useToast, useAlert } from './contexts';
 import { GlobalStyles } from './styles';
-import { HomePage, Toast, Alert } from './components';
+import { HomePage, Toast, Alert, MainLayout } from './components';
 
 const AppContent: React.FC = () => {
   const { toasts, removeToast } = useToast();
@@ -10,7 +10,9 @@ const AppContent: React.FC = () => {
   return (
     <>
       <GlobalStyles />
-      <HomePage />
+      <MainLayout>
+        <HomePage />
+      </MainLayout>
       <Toast toasts={toasts} onRemove={removeToast} />
       <Alert
         isOpen={alert.isOpen}

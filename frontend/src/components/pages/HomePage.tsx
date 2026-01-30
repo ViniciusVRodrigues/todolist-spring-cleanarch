@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import type { Task, TaskStatus } from '../../types';
-import { MainLayout } from '../templates';
 import { KanbanBoard } from '../organisms';
 import { Modal, TaskForm } from '../molecules';
 import { Button } from '../atoms';
@@ -76,7 +75,7 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <MainLayout>
+    <>
       <PageHeader>
         <PageTitle>Minhas Tarefas</PageTitle>
         <Button onClick={() => setIsCreateModalOpen(true)}>+ Nova Tarefa</Button>
@@ -116,6 +115,6 @@ export const HomePage: React.FC = () => {
           />
         )}
       </Modal>
-    </MainLayout>
+    </>
   );
 };
